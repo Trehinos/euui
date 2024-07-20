@@ -3,6 +3,7 @@ name = "euui"
 description = "An Extended Universal Unique Identifier"
 categories = ["encoding", "data-structures"]
 keywords = ["EUUI", "key", "unique", "guid"]
+license = "MIT"
 version = "0.9.0"
 edition = "2021"
 
