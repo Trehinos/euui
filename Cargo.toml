@@ -2,9 +2,9 @@
 name = "euui"
 description = "An Extended Universal Unique Identifier"
 categories = ["encoding", "data-structures"]
-keywords = ["EUUI", "identifier", "unique", "guid"]
+keywords = ["EUUI", "key", "unique", "guid", "identifier"]
 license = "MIT"
-version = "0.9.0"
+version = "0.9.1"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
@@ -12,4 +12,4 @@ edition = "2021"
 [dependencies]
 
 [dependencies.rand]
-version = "0.9.0-alpha.1"
+version = "0.*"
