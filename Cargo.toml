@@ -4,7 +4,7 @@ description = "An Extended Universal Unique Identifier"
 categories = ["encoding", "data-structures"]
 keywords = ["EUUI", "key", "unique", "guid", "identifier"]
 license = "MIT"
-version = "0.9.1"
+version = "0.9.2-notpublished"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
