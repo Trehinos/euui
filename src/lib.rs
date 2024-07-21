@@ -83,6 +83,10 @@ impl Euui {
         bytes
     }
 
+    /// Returns the 4 u128s composing this Euui.
+    ///
+    pub fn to_be_guids(&self) -> [u128; 4] { self.0 }
+
     /// Gets one of the 8 u64s composing this Euui.
     ///
     /// Returns [None] if index >= 8.
@@ -112,9 +116,6 @@ impl Euui {
             self.0[0], self.0[1], self.0[2], self.0[3]
         )
     }
-
-    /// Gets the 4 u128s composing this Euui.
-    pub fn to_guids(&self) -> [u128; 4] { self.0 }
 }
 
 impl Display for Euui {
