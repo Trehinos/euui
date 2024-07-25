@@ -1,6 +1,6 @@
-This crates provides the `Euui` struct.
+This crate provides the `Euui` struct.
 
-This struct holds a unique identifier which is **4 times bigger** than UUIDs and GUIDs.
+This type represents a unique identifier which is **4 times bigger** than UUIDs and GUIDs.  
 So, an EUUI is **512 bits** or 64 bytes. It can be read as 4x`u128`, 8x`u64` or 64x`u8`.
 
 A raw hexadecimal string representing an EUUI is 128 characters wide.  
@@ -14,7 +14,7 @@ You can create :
 Then, use :
 
 - `Euui::format` to display it as 4 u128s or `Euui::.to_string` to get the whole hexadecimal string,
-- or, `Euui::u128` to reach for individual u128s,
+- or, `Euui::u128` or `Euui::to_be_guids` to reach for individual u128s,
 - or, `Euui::u64` to reach for individual u64s,
 - or, `Euui::u8` or `Euui::to_be_bytes` to reach for individual u8s.
 
