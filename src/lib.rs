@@ -38,7 +38,7 @@ use rand::random;
 ///
 /// A 512-bits (64 bytes) identifier.
 ///
-/// A formatted Euui follows this pattern (given #x is `self.0[x - 1]: u128`) :
+/// A formatted EUUI follows this pattern (given #x is `self.0[x - 1]: u128`) :
 /// ```txt
 /// #1-#2
 /// #3-#4
@@ -49,19 +49,23 @@ use rand::random;
 pub struct Euui([u128; 4]);
 
 impl Euui {
-    /// Provides a new random 512-bits Euui.
+    /// Provides a new random 512-bits EUUI.
     pub fn random() -> Self {
         Self([random(), random(), random(), random()])
     }
+    /// Provides a 512-bits EUUI from 4 GUIDs.
+    pub fn new(a: u128, b: u128, c: u128, d: u128) -> Self {
+        Self([a, b, c, d])
+    }
 
-    /// Gets one of the 4 u128s composing this Euui.
+    /// Gets one of the 4 u128s composing this EUUI.
     ///
     /// Returns [None] if index >= 4.
     pub fn u128(&self, index: usize) -> Option<u128> {
         if index >= self.0.len() { None } else { Some(self.0[index]) }
     }
 
-    /// Gets one of the 64 u8s composing this Euui.
+    /// Gets one of the 64 u8s composing this EUUI.
     ///
     /// Returns [None] if index >= 64.
     pub fn u8(&self, index: usize) -> Option<u8> {
@@ -74,7 +78,7 @@ impl Euui {
         }
     }
 
-    /// Returns the 64 u8s composing this Euui.
+    /// Returns the 64 u8s composing this EUUI.
     pub fn to_be_bytes(&self) -> [u8; 64] {
         let mut bytes = [0u8; 64];
         for i in 0..64 {
@@ -83,11 +87,11 @@ impl Euui {
         bytes
     }
 
-    /// Returns the 4 u128s composing this Euui.
+    /// Returns the 4 u128s composing this EUUI.
     ///
     pub fn to_be_guids(&self) -> [u128; 4] { self.0 }
 
-    /// Gets one of the 8 u64s composing this Euui.
+    /// Gets one of the 8 u64s composing this EUUI.
     ///
     /// Returns [None] if index >= 8.
     pub fn u64(&self, index: usize) -> Option<u64> {
@@ -98,7 +102,7 @@ impl Euui {
         }
     }
 
-    /// Returns a hexadecimal formatted Euui which follows this pattern (given #x is `self.0[x - 1]`) :
+    /// Returns a hexadecimal formatted EUUI which follows this pattern (given #x is `self.0[x - 1]`) :
     /// ```txt
     /// #1-#2
     /// #3-#4
