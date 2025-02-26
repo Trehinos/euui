@@ -1,16 +1,16 @@
 [package]
 name = "euui"
 description = "An Extended Universal Unique Identifier"
-categories = ["encoding", "data-structures"]
+categories = ["encoding", "data-structures", "no-std"]
 keywords = ["EUUI", "key", "unique", "guid", "identifier"]
 license = "MIT"
-version = "1.0.0"
+version = "1.1.0"
 edition = "2021"
-repository = "https://asgard.trehinos.eu/rust-libs/euui"
+repository = "https://github.com/Trehinos/euui"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
 
 [dependencies.rand]
-version = "0.*"
+version = "0.9.*"
