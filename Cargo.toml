@@ -4,7 +4,7 @@ description = "An Extended Universal Unique Identifier"
 categories = ["encoding", "data-structures"]
 keywords = ["EUUI", "key", "unique", "guid", "identifier"]
 license = "MIT"
-version = "0.9.3"
+version = "1.0.0"
 edition = "2021"
 repository = "https://asgard.trehinos.eu/rust-libs/euui"
 
