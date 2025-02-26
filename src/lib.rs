@@ -131,6 +131,30 @@ impl Euui {
         Self([random(), random(), random(), fourth])
     }
 
+    /// Generates a new `Euui` with a randomly generated first component,
+    /// leaving the remaining components unchanged.
+    pub fn regenerate_first(&self) -> Self {
+        Self([random(), self.0[1], self.0[2], self.0[3]])
+    }
+
+    /// Generates a new `Euui` with a randomly generated second component,
+    /// leaving the remaining components unchanged.
+    pub fn regenerate_second(&self) -> Self {
+        Self([self.0[0], random(), self.0[2], self.0[3]])
+    }
+
+    /// Generates a new `Euui` with a randomly generated third component,
+    /// leaving the remaining components unchanged.
+    pub fn regenerate_third(&self) -> Self {
+        Self([self.0[0], self.0[1], random(), self.0[3]])
+    }
+
+    /// Generates a new `Euui` with a randomly generated fourth component,
+    /// leaving the remaining components unchanged.
+    pub fn regenerate_fourth(&self) -> Self {
+        Self([self.0[0], self.0[1], self.0[2], random()])
+    }
+
     /// Creates a new Euui from a provided array of 4 big-endian `u128` GUIDs.
     ///
     /// ## Arguments

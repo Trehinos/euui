@@ -129,6 +129,14 @@ The main functionalities of the `Euui` type are:
   Generates a new random Euui with the third `u128` component provided.
 - **`Euui::random_from_fourth(u128)`**
   Generates a new random Euui with the fourth `u128` component provided.
+- **`Euui::regenerate_first(&self)`**
+  Generates a new `Euui` with a randomly generated first component.
+- **`Euui::regenerate_second(&self)`**
+  Generates a new `Euui` with a randomly generated second component.
+- **`Euui::regenerate_third(&self)`**
+  Generates a new `Euui` with a randomly generated third component.
+- **`Euui::regenerate_fourth(&self)`**
+  Generates a new `Euui` with a randomly generated fourth component.
 
 ### Accessor Methods
 
@@ -152,17 +160,17 @@ The main functionalities of the `Euui` type are:
   #1-#2
   #3-#4.
 
-## Use Cases
-
-### Large-Scale Unique ID Generation
+## Use Cases : Large-Scale Unique ID Generation
 
 With 512 bits of entropy, `Euui` can be useful for applications where traditional 128-bit UUIDs are insufficient to
 guarantee uniqueness:
 
-- Distributed systems
-- Cryptographic key identifiers
-- Unique identifiers in high-throughput environments
+- Distributed systems,
+- Cryptographic key identifiers,
+- Unique identifiers in high-throughput environments,
+- Large enough to have UUID/GUID parts.
 
 ## License
 
+&copy; 2024-2025 [Sébastien GELDREICH](mailto:dev@trehinos.eu)  
 This project is licensed under the MIT License. See [LICENSE]() for more details.
