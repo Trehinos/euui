@@ -147,7 +147,9 @@ The main functionalities of the `Euui` type are:
 - **`u8(index: usize) -> Option<u8>`**
   Retrieve a specific `u8` component. Index must be in the range `[0, 63]`.
 - **`to_be_bytes() -> [u8; 64]`**
-  Retrieve the entire `Euui` as an array of 64 bytes.
+  Retrieve the entire `Euui` as an array of 64*`u8`.
+- **`to_be_longs() -> [u64; 8]`**
+  Retrieve the entire `Euui` as an array of 8*`u64`.
 - **`to_be_guids() -> [u128; 4]`**
   Retrieve the entire `Euui` as an array of 4×`u128`.
 
