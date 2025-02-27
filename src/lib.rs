@@ -57,7 +57,7 @@ use rand::random;
 /// ```
 ///
 /// The LF character (ASCII 0x0A) is used for new lines.
-#[derive(Copy, Clone, Default, Eq, PartialEq, Debug)]
+#[derive(Copy, Clone, Default, Eq, PartialEq, Debug, PartialOrd, Ord, Hash)]
 pub struct Euui([u128; 4]);
 
 impl Euui {
@@ -77,7 +77,6 @@ impl Euui {
         Self([random(), random(), random(), random()])
     }
 
-    
     /// Generates a new random Euui with the first `u128` component provided
     /// and the remaining three components generated randomly.
     ///
@@ -104,9 +103,8 @@ impl Euui {
     pub fn random_from_first(first: u128) -> Self {
         Self([first, random(), random(), random()])
     }
-    
 
-    /// Generates a new random Euui with the third `u128` component provided
+    /// Generates a new random Euui with the second `u128` component provided
     /// and the remaining three components generated randomly.
     ///
     /// See [Self::random_from_first].
@@ -121,7 +119,6 @@ impl Euui {
     pub fn random_from_third(third: u128) -> Self {
         Self([random(), random(), third, random()])
     }
-
 
     /// Generates a new random Euui with the fourth `u128` component provided
     /// and the remaining three components generated randomly.
@@ -255,6 +252,33 @@ impl Euui {
             bytes[i] = self.u8(i).unwrap();
         }
         bytes
+    }
+    
+
+    /// Returns the 8 u64s that represent this Euui in big-endian order.
+    ///
+    /// ## Returns
+    ///
+    /// A fixed-size array of 8 `u64` values, where each value corresponds
+    /// to an 8-byte segment of the 64 bytes composing this Euui.
+    ///
+    /// ## Example
+    ///
+    /// ```rust
+    /// use euui::Euui;
+    ///
+    /// let bytes = [0u8; 64]; // Example input
+    /// let euui = Euui::from_be_bytes(bytes);
+    /// let longs = euui.to_be_longs();
+    ///
+    /// assert_eq!(longs, [0u64; 8]);
+    /// ```
+    pub fn to_be_longs(&self) -> [u64; 8] {
+        let mut longs = [0u64; 8];
+        for i in 0..8 {
+            longs[i] = self.u64(i).unwrap();
+        }
+        longs
     }
 
     /// Returns the 4 u128s composing this Euui.
