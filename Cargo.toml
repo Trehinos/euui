@@ -10,7 +10,12 @@ repository = "https://github.com/Trehinos/euui"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
-[dependencies]
+[features]
+default = []
+random = ["dep:rand"]
+random_uuid = ["uuid", "uuid/v4"]
+uuid = ["dep:uuid"]
 
-[dependencies.rand]
-version = "0.9.*"
+[dependencies]
+rand = { version = "0.9.*", optional = true }
+uuid = { version = "1.*", optional = true }

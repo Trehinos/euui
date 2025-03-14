@@ -8,7 +8,6 @@
 //!
 //! You can create :
 //!  - a zero Euui with [Euui::default],
-//!  - or, a random one with [Euui::random].
 //!
 //! Then, use :
 //!  - [Euui::format] to display it as 4 u128s or `.to_string()` to get the whole hexadecimal string,
@@ -22,20 +21,23 @@
 //! use euui::Euui;
 //!
 //! // Generate a zero-initialized Euui
-//! let zero_euui = Euui::default();
+//! let zero_euui = Euui::default(); // or Euui::zero()
 //! println!("Zero Euui: {}", zero_euui);
 //!
 //! // Generate a random Euui
-//! let random_euui = Euui::random();
-//! println!("Random Euui: {}", random_euui);
+//! #[cfg(feature = "random")]
+//! fn test_random() {
+//!     let random_euui = Euui::random();
+//!     println!("Random Euui: {}", random_euui);
 //!
-//! // Format a Euui
-//! let formatted = random_euui.format();
-//! println!("Formatted Euui:\n{}", formatted);
+//!     // Format a Euui
+//!     let formatted = random_euui.format();
+//!     println!("Formatted Euui:\n{}", formatted);
 //!
-//! // Access specific parts of the Euui
-//! if let Some(first_u128) = random_euui.u128(0) {
-//!     println!("First u128 of random Euui: {:032x}", first_u128);
+//!     // Access specific parts of the Euui
+//!     if let Some(first_u128) = random_euui.u128(0) {
+//!         println!("First u128 of random Euui: {:032x}", first_u128);
+//!     }
 //! }
 //! ```
 #![no_std]
@@ -44,7 +46,6 @@ extern crate alloc;
 use alloc::format;
 use alloc::string::String;
 use core::fmt::{Display, Formatter};
-use rand::random;
 
 /// Extended Universal Unique Identifier
 ///
@@ -61,97 +62,6 @@ use rand::random;
 pub struct Euui([u128; 4]);
 
 impl Euui {
-    /// Generates a new random Euui.
-    ///
-    /// Each component of the Euui is generated using the `rand` crate's `random` function.
-    ///
-    /// ## Example
-    ///
-    /// ```rust
-    /// use euui::Euui;
-    ///
-    /// let euui = Euui::random();
-    /// println!("{}", euui);
-    /// ```
-    pub fn random() -> Self {
-        Self([random(), random(), random(), random()])
-    }
-
-    /// Generates a new random Euui with the first `u128` component provided
-    /// and the remaining three components generated randomly.
-    ///
-    /// ## Arguments
-    ///
-    /// * `first` - The first `u128` value to initialize the Euui.
-    ///
-    /// ## Returns
-    ///
-    /// A new `Euui` instance where the first `u128` value is set to the provided value,
-    /// and the other three components are randomly generated.
-    ///
-    /// ## Example
-    ///
-    /// ```rust
-    /// use euui::Euui;
-    ///
-    /// let first = 0x1234567890abcdef1234567890abcdef;
-    /// let euui = Euui::random_from_first(first);
-    ///
-    /// println!("{:?}", euui);
-    /// assert_eq!(euui.to_be_guids().first().unwrap(), &first)
-    /// ```
-    pub fn random_from_first(first: u128) -> Self {
-        Self([first, random(), random(), random()])
-    }
-
-    /// Generates a new random Euui with the second `u128` component provided
-    /// and the remaining three components generated randomly.
-    ///
-    /// See [Self::random_from_first].
-    pub fn random_from_second(second: u128) -> Self {
-        Self([random(), second, random(), random()])
-    }
-
-    /// Generates a new random Euui with the third `u128` component provided
-    /// and the remaining three components generated randomly.
-    ///
-    /// See [Self::random_from_first].
-    pub fn random_from_third(third: u128) -> Self {
-        Self([random(), random(), third, random()])
-    }
-
-    /// Generates a new random Euui with the fourth `u128` component provided
-    /// and the remaining three components generated randomly.
-    ///
-    /// See [Self::random_from_first].
-    pub fn random_from_fourth(fourth: u128) -> Self {
-        Self([random(), random(), random(), fourth])
-    }
-
-    /// Generates a new `Euui` with a randomly generated first component,
-    /// leaving the remaining components unchanged.
-    pub fn regenerate_first(&self) -> Self {
-        Self([random(), self.0[1], self.0[2], self.0[3]])
-    }
-
-    /// Generates a new `Euui` with a randomly generated second component,
-    /// leaving the remaining components unchanged.
-    pub fn regenerate_second(&self) -> Self {
-        Self([self.0[0], random(), self.0[2], self.0[3]])
-    }
-
-    /// Generates a new `Euui` with a randomly generated third component,
-    /// leaving the remaining components unchanged.
-    pub fn regenerate_third(&self) -> Self {
-        Self([self.0[0], self.0[1], random(), self.0[3]])
-    }
-
-    /// Generates a new `Euui` with a randomly generated fourth component,
-    /// leaving the remaining components unchanged.
-    pub fn regenerate_fourth(&self) -> Self {
-        Self([self.0[0], self.0[1], self.0[2], random()])
-    }
-
     /// Creates a new Euui from a provided array of 4 big-endian `u128` GUIDs.
     ///
     /// ## Arguments
@@ -253,7 +163,6 @@ impl Euui {
         }
         bytes
     }
-    
 
     /// Returns the 8 u64s that represent this Euui in big-endian order.
     ///
@@ -324,6 +233,14 @@ impl Euui {
     }
 }
 
+#[cfg(feature = "random")]
+#[cfg_attr(docsrs, doc(cfg(feature = "random")))]
+mod random;
+
+#[cfg(feature = "uuid")]
+#[cfg_attr(docsrs, doc(cfg(feature = "uuid")))]
+mod uuid;
+
 impl Display for Euui {
     /// Returns a hexadecimal Euui in one block. It follows this pattern (given #x is `self.0[x - 1]`) :
     /// ```txt
@@ -359,6 +276,7 @@ mod tests {
     }
 
     #[test]
+    #[cfg(feature = "random")]
     fn test_non_zero() {
         let euui = Euui::random();
         assert_ne!(

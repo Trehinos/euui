@@ -6,8 +6,7 @@
 larger** than traditional UUIDs or GUIDs. This allows for enhanced uniqueness and adaptability in scenarios where more
 significant identifiers are required.
 The `Euui` type can be utilized for various applications, offering readable formats and flexible access to its
-components (`u128`, `u64`, `u8`), making it a powerful alternative for unique identification in embedded or
-resource-constrained environments.
+components (`Uuid`, `u128`, `u64`, `u8`), for unique identification in embedded or resource-constrained environments.
 
 ### Key Features
 
@@ -22,16 +21,6 @@ resource-constrained environments.
 - **Generation**:
     - Create a zero-initialized `Euui` using `default()`.
     - Generate a random `Euui` using `random()`.
-
-## Installation
-
-Add the following dependency to your `Cargo.toml`:
-
-```toml
-[dependencies]
-euui = "1.1.0"
-rand = "0.9.0"
-```
 
 ## Usage
 
@@ -113,45 +102,39 @@ The main functionalities of the `Euui` type are:
 
 ### Creation Methods
 
-- **`Euui::default()`**
-  Creates a zero-initialized `Euui`.
-- **`Euui::random()`**
-  Generates a random `Euui`.
-- **`Euui::from_be_guids([u128; 4])`**
-  Initializes an `Euui` from an array of 4×`u128`.
-- **`Euui::from_be_bytes([u8; 64])`**
-  Initializes an `Euui` from a 64-byte array.
-- **`Euui::random_from_first(u128)`**
-  Generates a new random Euui with the first `u128` component provided.
-- **`Euui::random_from_second(u128)`**
-  Generates a new random Euui with the second `u128` component provided.
-- **`Euui::random_from_third(u128)`**
-  Generates a new random Euui with the third `u128` component provided.
-- **`Euui::random_from_fourth(u128)`**
-  Generates a new random Euui with the fourth `u128` component provided.
-- **`Euui::regenerate_first(&self)`**
-  Generates a new `Euui` with a randomly generated first component.
-- **`Euui::regenerate_second(&self)`**
-  Generates a new `Euui` with a randomly generated second component.
-- **`Euui::regenerate_third(&self)`**
-  Generates a new `Euui` with a randomly generated third component.
-- **`Euui::regenerate_fourth(&self)`**
-  Generates a new `Euui` with a randomly generated fourth component.
+- **`Euui::default() -> Euui`**
+- **`Euui::from_be_guids([u128; 4]) -> Euui`**
+- **`Euui::from_be_bytes([u8; 64]) -> Euui`**
 
 ### Accessor Methods
 
-- **`u128(index: usize) -> Option<u128>`**
-  Retrieve a specific `u128` component. Index must be in the range `[0, 3]`.
-- **`u64(index: usize) -> Option<u64>`**
-  Retrieve a specific `u64` component. Index must be in the range `[0, 7]`.
-- **`u8(index: usize) -> Option<u8>`**
-  Retrieve a specific `u8` component. Index must be in the range `[0, 63]`.
-- **`to_be_bytes() -> [u8; 64]`**
-  Retrieve the entire `Euui` as an array of 64*`u8`.
-- **`to_be_longs() -> [u64; 8]`**
-  Retrieve the entire `Euui` as an array of 8*`u64`.
-- **`to_be_guids() -> [u128; 4]`**
-  Retrieve the entire `Euui` as an array of 4×`u128`.
+- **`u128(index: usize) -> Option<u128>`** Index must be in the range `[0, 3]`.
+- **`u64(index: usize) -> Option<u64>`** Index must be in the range `[0, 7]`.
+- **`u8(index: usize) -> Option<u8>`** Index must be in the range `[0, 63]`.
+- **`to_be_bytes() -> [u8; 64]`** `Euui` as an array of 64*`u8`.
+- **`to_be_longs() -> [u64; 8]`** `Euui` as an array of 8*`u64`.
+- **`to_be_guids() -> [u128; 4]`** `Euui` as an array of 4×`u128`.
+
+### Features
+
+#### With the feature `random`
+
+- **`Euui::random() -> Euui`**
+- **`Euui::random_from_first(u128)`**   
+  & (`random_from_second`, `random_from_third`, `random_from_fourth`)
+- **`Euui::regenerate_first(&self)`**    
+  & (`regenerate_second`, `regenerate_third`, `regenerate_fourth`).
+
+#### With the feature `uuid`
+
+- **`Euui::with_uuid_part(Uuid, usize)`**  
+  & (`Euui::with_first(Uuid)`, `Euui::with_second`, `Euui::with_third`, **`Euui::with_fourth`).
+- **`Euui::from_be_bytes([Uuid; 4])`**
+- **`uuid(index: usize) -> Option<Uuid>`** Index must be in the range `[0, 3]`.
+
+#### With the feature `random_uuid`
+
+- **`Euui::random_uuids()`** Generates a new `Euui` instance with an array of random `Uuid/v4` values
 
 ### Display Methods
 
@@ -161,6 +144,8 @@ The main functionalities of the `Euui` type are:
   Formats the `Euui` into a structured string, following the pattern:
   #1-#2
   #3-#4.
+
+> Read the complete API documentation [here](https://docs.rs/euui).
 
 ## Use Cases : Large-Scale Unique ID Generation
 
