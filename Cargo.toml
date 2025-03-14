@@ -4,14 +4,14 @@ description = "An Extended Universal Unique Identifier"
 categories = ["encoding", "data-structures", "no-std"]
 keywords = ["EUUI", "key", "unique", "guid", "identifier"]
 license = "MIT"
-version = "1.1.1"
+version = "1.2.0"
 edition = "2021"
 repository = "https://github.com/Trehinos/euui"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [features]
-default = []
+default = ["random", "uuid", "random_uuid"]
 random = ["dep:rand"]
 random_uuid = ["uuid", "uuid/v4"]
 uuid = ["dep:uuid"]
