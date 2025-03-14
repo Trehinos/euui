@@ -108,12 +108,12 @@ The main functionalities of the `Euui` type are:
 
 ### Accessor Methods
 
-- **`u128(index: usize) -> Option<u128>`** Index must be in the range `[0, 3]`.
-- **`u64(index: usize) -> Option<u64>`** Index must be in the range `[0, 7]`.
-- **`u8(index: usize) -> Option<u8>`** Index must be in the range `[0, 63]`.
-- **`to_be_bytes() -> [u8; 64]`** `Euui` as an array of 64*`u8`.
-- **`to_be_longs() -> [u64; 8]`** `Euui` as an array of 8*`u64`.
-- **`to_be_guids() -> [u128; 4]`** `Euui` as an array of 4×`u128`.
+- **`u128(index: usize) -> Option<u128>`**
+- **`u64(index: usize) -> Option<u64>`**
+- **`u8(index: usize) -> Option<u8>`**
+- **`to_be_bytes() -> [u8; 64]`** `Euui`
+- **`to_be_longs() -> [u64; 8]`** `Euui`
+- **`to_be_guids() -> [u128; 4]`** `Euui`
 
 ### Features
 
@@ -130,17 +130,17 @@ The main functionalities of the `Euui` type are:
 - **`Euui::with_uuid_part(Uuid, usize)`**  
   & (`Euui::with_first(Uuid)`, `Euui::with_second`, `Euui::with_third`, **`Euui::with_fourth`).
 - **`Euui::from_be_bytes([Uuid; 4])`**
-- **`uuid(index: usize) -> Option<Uuid>`** Index must be in the range `[0, 3]`.
+- **`uuid(index: usize) -> Option<Uuid>`**
 
 #### With the feature `random_uuid`
 
-- **`Euui::random_uuids()`** Generates a new `Euui` instance with an array of random `Uuid/v4` values
+- **`Euui::random_uuids()`** (`Uuid:v4`)
 
 ### Display Methods
 
-- **`to_string()`**
+- **`to_string()`**  
   Converts the `Euui` to a single hexadecimal string representation.
-- **`format() -> String`**
+- **`format() -> String`**  
   Formats the `Euui` into a structured string, following the pattern:
   #1-#2
   #3-#4.
