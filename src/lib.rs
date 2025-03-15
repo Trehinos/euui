@@ -142,6 +142,23 @@ impl Euui {
         }
     }
 
+    /// Gets one of the 8 u64s composing this Euui.
+    ///
+    /// Returns [None] if index >= 8.
+    pub fn u64(&self, index: usize) -> Option<u64> {
+        if index >= self.0.len() * 2 {
+            None
+        } else {
+            let start = index * 8;
+            let end = start + 8;
+            Some(u64::from_be_bytes(
+                self.to_be_bytes()[start..end]
+                    .try_into()
+                    .expect("Logic error"),
+            ))
+        }
+    }
+
     /// Gets one of the 64 u8s composing this Euui.
     ///
     /// Returns [None] if index >= 64.
@@ -158,8 +175,8 @@ impl Euui {
     /// Returns the 64 u8s composing this Euui.
     pub fn to_be_bytes(&self) -> [u8; 64] {
         let mut bytes = [0u8; 64];
-        for i in 0..64 {
-            bytes[i] = self.u8(i).unwrap();
+        for (i, byte) in bytes.iter_mut().enumerate() {
+            *byte = self.u8(i).unwrap();
         }
         bytes
     }
@@ -196,23 +213,6 @@ impl Euui {
         self.0
     }
 
-    /// Gets one of the 8 u64s composing this Euui.
-    ///
-    /// Returns [None] if index >= 8.
-    pub fn u64(&self, index: usize) -> Option<u64> {
-        if index >= self.0.len() * 2 {
-            None
-        } else {
-            let start = index * 8;
-            let end = start + 8;
-            Some(u64::from_be_bytes(
-                self.to_be_bytes()[start..end]
-                    .try_into()
-                    .expect("Logic error"),
-            ))
-        }
-    }
-
     /// Returns a hexadecimal formatted Euui which follows this pattern (given #x is `self.0[x - 1]`) :
     /// ```txt
     /// #1-#2
@@ -234,11 +234,9 @@ impl Euui {
 }
 
 #[cfg(feature = "random")]
-#[cfg_attr(docsrs, doc(cfg(feature = "random")))]
 mod random;
 
 #[cfg(feature = "uuid")]
-#[cfg_attr(docsrs, doc(cfg(feature = "uuid")))]
 mod uuid;
 
 impl Display for Euui {

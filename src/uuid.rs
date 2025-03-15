@@ -102,7 +102,6 @@ impl Euui {
     /// A new `Euui` instance with all four parts of the internal GUID array
     /// populated using randomly generated `Uuid/v4` values.
     #[cfg(feature = "random_uuid")]
-    #[cfg_attr(docsrs, doc(cfg(feature = "random_uuid")))]
     pub fn random_uuids() -> Self {
         Self::from_uuids([
             Uuid::new_v4(),
