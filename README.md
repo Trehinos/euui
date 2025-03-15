@@ -115,6 +115,17 @@ The main functionalities of the `Euui` type are:
 - **`to_be_longs() -> [u64; 8]`** `Euui`
 - **`to_be_guids() -> [u128; 4]`** `Euui`
 
+### Display Methods
+
+- **`to_string()`**  
+  Converts the `Euui` to a single hexadecimal string representation.
+- **`format() -> String`**  
+  Formats the `Euui` into a structured string, following the pattern:
+  ```
+  #1-#2  
+  #3-#4
+  ```  
+
 ### Features
 
 #### With the feature `random`
@@ -128,22 +139,13 @@ The main functionalities of the `Euui` type are:
 #### With the feature `uuid`
 
 - **`Euui::with_uuid_part(Uuid, usize)`**  
-  & (`Euui::with_first(Uuid)`, `Euui::with_second`, `Euui::with_third`, **`Euui::with_fourth`).
+  & (`with_first(Uuid)`, `with_second`, `with_third`, `with_fourth`).
 - **`Euui::from_be_bytes([Uuid; 4])`**
 - **`uuid(index: usize) -> Option<Uuid>`**
 
 #### With the feature `random_uuid`
 
 - **`Euui::random_uuids()`** (`Uuid:v4`)
-
-### Display Methods
-
-- **`to_string()`**  
-  Converts the `Euui` to a single hexadecimal string representation.
-- **`format() -> String`**  
-  Formats the `Euui` into a structured string, following the pattern:
-  #1-#2
-  #3-#4.
 
 > Read the complete API documentation [here](https://docs.rs/euui).
 
