@@ -233,12 +233,6 @@ impl Euui {
     }
 }
 
-#[cfg(feature = "random")]
-mod random;
-
-#[cfg(feature = "uuid")]
-mod uuid;
-
 impl Display for Euui {
     /// Returns a hexadecimal Euui in one block. It follows this pattern (given #x is `self.0[x - 1]`) :
     /// ```txt
@@ -258,6 +252,13 @@ impl Display for Euui {
         )
     }
 }
+
+#[cfg(feature = "random")]
+mod random;
+
+#[cfg(feature = "uuid")]
+mod uuid;
+
 
 #[cfg(test)]
 mod tests {
