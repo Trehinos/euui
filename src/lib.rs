@@ -40,6 +40,38 @@
 //!     }
 //! }
 //! ```
+//!
+//! ### Features
+//!
+//! The features of this crate add methods to the type [Euui].
+//!
+//! #### With the feature `random`
+//!
+//! - [Euui::random]
+//! - [Euui::random_from_first]
+//! - [Euui::random_from_second]
+//! - [Euui::random_from_third]
+//! - [Euui::random_from_fourth]
+//! - [Euui::regenerate_first]
+//! - [Euui::regenerate_second]
+//! - [Euui::regenerate_third]
+//! - [Euui::regenerate_fourth]
+//!
+//! #### With the feature `uuid`
+//!
+//! - [Euui::from_uuids]
+//! - [Euui::with_uuid_part]
+//! - [Euui::with_first]
+//! - [Euui::with_second]
+//! - [Euui::with_third]
+//! - [Euui::with_fourth]
+//! - [Euui::from_be_bytes]
+//! - [Euui::uuid]
+//!
+//! #### With the feature `random_uuid`
+//!
+//! - [Euui::random_uuids]
+
 #![no_std]
 extern crate alloc;
 
@@ -127,6 +159,48 @@ impl Euui {
         for i in 0..4 {
             guids[i] =
                 u128::from_be_bytes(bytes[i * 16..(i + 1) * 16].try_into().expect("Logic error"));
+        }
+        Self(guids)
+    }
+
+    /// Creates a new Euui from a provided array of 8 big-endian `u64` values.
+    ///
+    /// ## Arguments
+    ///
+    /// * `bytes` - An array of 8 `u64` values to initialize the Euui.
+    ///             Each pair of `u64` values is concatenated to form a single `u128` value
+    ///             in big-endian order, resulting in a total of 4 `u128` values.
+    ///
+    /// ## Returns
+    ///
+    /// A new `Euui` instance containing the given `u64` values as 4 big-endian `u128` values.
+    ///
+    /// ## Example
+    ///
+    /// ```rust
+    /// use euui::Euui;
+    ///
+    /// let longs = [
+    ///     0x1234567890abcdef, 0xfedcba0987654321,
+    ///     0xabcdef1234567890, 0x1234567890abcdef,
+    ///     0x0987654321abcdef, 0xabcdef9876543210,
+    ///     0x567890abcdef1234, 0x4321fedcba987654,
+    /// ];
+    /// let euui = Euui::from_be_longs(longs);
+    ///
+    /// assert_eq!(euui.u128(0).unwrap(), 0x1234567890abcdeffedcba0987654321);
+    /// assert_eq!(euui.u128(1).unwrap(), 0xabcdef12345678901234567890abcdef);
+    /// assert_eq!(euui.u128(2).unwrap(), 0x0987654321abcdefabcdef9876543210);
+    /// assert_eq!(euui.u128(3).unwrap(), 0x567890abcdef12344321fedcba987654);
+    /// ```
+    pub fn from_be_longs(bytes: [u64; 8]) -> Self {
+        let mut guids = [0u128; 4];
+        for i in 0..4 {
+            let long_a = bytes[i * 2];
+            let long_b = bytes[i * 2 + 1];
+            let mut bytes = long_a.to_be_bytes().to_vec();
+            bytes.extend_from_slice(&long_b.to_be_bytes());
+            guids[i] = u128::from_be_bytes(bytes.try_into().expect("Logic error"));
         }
         Self(guids)
     }
@@ -258,7 +332,6 @@ mod random;
 
 #[cfg(feature = "uuid")]
 mod uuid;
-
 
 #[cfg(test)]
 mod tests {

@@ -5,6 +5,7 @@
 `Euui` is a Rust library (`no_std` compatible) that provides a 512-bit (64 bytes) unique identifier, which is **4 times
 larger** than traditional UUIDs or GUIDs. This allows for enhanced uniqueness and adaptability in scenarios where more
 significant identifiers are required.
+
 The `Euui` type can be utilized for various applications, offering readable formats and flexible access to its
 components (`Uuid`, `u128`, `u64`, `u8`), for unique identification in embedded or resource-constrained environments.
 
@@ -16,7 +17,7 @@ components (`Uuid`, `u128`, `u64`, `u8`), for unique identification in embedded 
     - A formatted string with 131 characters, including separators (`-`) and line breaks (`\n`).
 
 - **Components Access**:
-    - Retrieve identifiers as 4×`u128`, 8×`u64`, or 64×`u8`.
+    - Retrieve identifiers parts as 4×`u128`, 8×`u64`, 64×`u8` or 4x`Uuid` (with the feature `uuid`).
 
 - **Generation**:
     - Create a zero-initialized `Euui` using `default()`.
@@ -104,6 +105,7 @@ The main functionalities of the `Euui` type are:
 
 - **`Euui::default() -> Euui`**
 - **`Euui::from_be_guids([u128; 4]) -> Euui`**
+- **`Euui::from_be_longs([u64; 8]) -> Euui`**
 - **`Euui::from_be_bytes([u8; 64]) -> Euui`**
 
 ### Accessor Methods
@@ -140,7 +142,7 @@ The main functionalities of the `Euui` type are:
 
 - **`Euui::with_uuid_part(Uuid, usize)`**  
   & (`with_first(Uuid)`, `with_second`, `with_third`, `with_fourth`).
-- **`Euui::from_be_bytes([Uuid; 4])`**
+- **`Euui::from_uuids([Uuid; 4])`**
 - **`uuid(index: usize) -> Option<Uuid>`**
 
 #### With the feature `random_uuid`
