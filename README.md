@@ -103,6 +103,7 @@ The main functionalities of the `Euui` type are:
 
 ### Creation Methods
 
+- **`Euui::zero() -> Euui`**
 - **`Euui::default() -> Euui`**
 - **`Euui::from_be_guids([u128; 4]) -> Euui`**
 - **`Euui::from_be_longs([u64; 8]) -> Euui`**
@@ -123,10 +124,10 @@ The main functionalities of the `Euui` type are:
   Converts the `Euui` to a single hexadecimal string representation.
 - **`format() -> String`**  
   Formats the `Euui` into a structured string, following the pattern:
-  ```
-  #1-#2  
-  #3-#4
-  ```  
+```
+#1-#2  
+#3-#4
+```  
 
 ### Features
 
@@ -149,17 +150,18 @@ The main functionalities of the `Euui` type are:
 
 - **`Euui::random_uuids()`** (`Uuid:v4`)
 
+### Documentation
+
 > Read the complete API documentation [here](https://docs.rs/euui).
 
 ## Use Cases : Large-Scale Unique ID Generation
 
-With 512 bits of entropy, `Euui` can be useful for applications where traditional 128-bit UUIDs are insufficient to
-guarantee uniqueness:
+With 512 bits of entropy, `Euui` can be useful for applications where traditional 128-bit UUIDs are insufficient:
 
+- Large enough to have **UUID/GUID parts**,
 - Distributed systems,
 - Cryptographic key identifiers,
-- Unique identifiers in high-throughput environments,
-- Large enough to have UUID/GUID parts.
+- Unique identifiers in high-throughput environments.
 
 ## License
 

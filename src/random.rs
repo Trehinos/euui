@@ -21,29 +21,6 @@ impl Euui {
         Self([random(), random(), random(), random()])
     }
 
-    /// Returns a zero-initialized `Euui`.
-    ///
-    /// ## Description
-    ///
-    /// This function generates a `Euui` instance with all components
-    /// initialized to zero, effectively creating a blank or default `Euui`.
-    ///
-    /// ## Returns
-    ///
-    /// A `Euui` instance with all components set to `0`.
-    ///
-    /// ## Example
-    ///
-    /// ```rust
-    /// use euui::Euui;
-    ///
-    /// let zero_euui = Euui::zero();
-    /// println!("{:?}", zero_euui); // Outputs: Euui([0, 0, 0, 0])
-    /// ```
-    pub fn zero() -> Self {
-        Self([0, 0, 0, 0])
-    }
-
     /// Generates a new random Euui with the first `u128` component provided
     /// and the remaining three components generated randomly.
     ///
