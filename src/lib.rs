@@ -219,11 +219,12 @@ impl Euui {
     pub fn from_be_longs(bytes: [u64; 8]) -> Self {
         let mut guids = [0u128; 4];
         for i in 0..4 {
-            let long_a = bytes[i * 2];
-            let long_b = bytes[i * 2 + 1];
-            let mut bytes = long_a.to_be_bytes().to_vec();
-            bytes.extend_from_slice(&long_b.to_be_bytes());
-            guids[i] = u128::from_be_bytes(bytes.try_into().expect("Logic error"));
+            let long_a = bytes[i * 2].to_be_bytes();
+            let long_b = bytes[i * 2 + 1].to_be_bytes();
+            let mut buf = [0u8; 16];
+            buf[..8].copy_from_slice(&long_a);
+            buf[8..].copy_from_slice(&long_b);
+            guids[i] = u128::from_be_bytes(buf);
         }
         Self(guids)
     }
