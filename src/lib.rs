@@ -273,8 +273,9 @@ impl Euui {
     /// Returns the 64 u8s composing this Euui.
     pub fn to_be_bytes(&self) -> [u8; 64] {
         let mut bytes = [0u8; 64];
-        for (i, byte) in bytes.iter_mut().enumerate() {
-            *byte = self.u8(i).unwrap();
+        for (i, guid) in self.0.iter().enumerate() {
+            let part = guid.to_be_bytes();
+            bytes[i * 16..(i + 1) * 16].copy_from_slice(&part);
         }
         bytes
     }
@@ -299,8 +300,10 @@ impl Euui {
     /// ```
     pub fn to_be_longs(&self) -> [u64; 8] {
         let mut longs = [0u64; 8];
-        for i in 0..8 {
-            longs[i] = self.u64(i).unwrap();
+        for (i, guid) in self.0.iter().enumerate() {
+            let bytes = guid.to_be_bytes();
+            longs[i * 2] = u64::from_be_bytes(bytes[0..8].try_into().expect("Logic error"));
+            longs[i * 2 + 1] = u64::from_be_bytes(bytes[8..16].try_into().expect("Logic error"));
         }
         longs
     }
