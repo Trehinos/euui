@@ -4,7 +4,9 @@ description = "An Extended Universal Unique Identifier"
 categories = ["encoding", "data-structures", "no-std"]
 keywords = ["EUUI", "key", "unique", "guid", "identifier"]
 license = "MIT"
-version = "1.2.3"
+version = "1.3.0"
+authors = ["<Sébastien GELDREICH> <<dev@trehinos.eu>>"]
+readme = "README.md"
 edition = "2021"
 repository = "https://github.com/Trehinos/euui"
 

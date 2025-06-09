@@ -166,4 +166,4 @@ With 512 bits of entropy, `Euui` can be useful for applications where traditiona
 ## License
 
 &copy; 2024-2025 [Sébastien GELDREICH](mailto:dev@trehinos.eu)  
-This project is licensed under the MIT License. See [LICENSE]() for more details.
+This project is licensed under the MIT License. See [LICENSE](LICENSE) for more details.
