@@ -361,6 +361,9 @@ mod uuid;
 mod tests {
     use crate::Euui;
     use alloc::string::ToString;
+    use alloc::format;
+    #[cfg(feature = "uuid")]
+    use uuid::Uuid;
 
     #[test]
     fn test_zero() {
@@ -379,5 +382,155 @@ mod tests {
             euui.to_string(),
             "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
         );
+    }
+
+    #[test]
+    fn test_from_be_guids() {
+        let guids = [1u128, 2, 3, 4];
+        let euui = Euui::from_be_guids(guids);
+        assert_eq!(euui.to_be_guids(), guids);
+    }
+
+    #[test]
+    fn test_from_be_bytes() {
+        let mut bytes = [0u8; 64];
+        for i in 0..64 {
+            bytes[i] = i as u8;
+        }
+        let euui = Euui::from_be_bytes(bytes);
+        assert_eq!(euui.to_be_bytes(), bytes);
+    }
+
+    #[test]
+    fn test_from_be_longs() {
+        let longs = [1u64, 2, 3, 4, 5, 6, 7, 8];
+        let euui = Euui::from_be_longs(longs);
+        assert_eq!(euui.to_be_longs(), longs);
+    }
+
+    #[test]
+    fn test_accessors() {
+        let mut bytes = [0u8; 64];
+        for i in 0..64 {
+            bytes[i] = i as u8;
+        }
+        let euui = Euui::from_be_bytes(bytes);
+        for i in 0..4 {
+            assert_eq!(euui.u128(i).unwrap(), u128::from_be_bytes(bytes[i * 16..(i + 1) * 16].try_into().unwrap()));
+        }
+        assert!(euui.u128(4).is_none());
+        for i in 0..8 {
+            let start = i * 8;
+            let end = start + 8;
+            assert_eq!(euui.u64(i).unwrap(), u64::from_be_bytes(bytes[start..end].try_into().unwrap()));
+        }
+        assert!(euui.u64(8).is_none());
+        for i in 0..64 {
+            assert_eq!(euui.u8(i).unwrap(), bytes[i]);
+        }
+        assert!(euui.u8(64).is_none());
+    }
+
+    #[test]
+    fn test_format_and_display() {
+        let guids = [1u128, 2, 3, 4];
+        let euui = Euui::from_be_guids(guids);
+        let formatted = euui.format();
+        assert_eq!(
+            formatted,
+            format!(
+                "{:032x}-{:032x}\n{:032x}-{:032x}",
+                guids[0], guids[1], guids[2], guids[3]
+            )
+        );
+        let display = euui.to_string();
+        assert_eq!(
+            display,
+            format!("{:032x}{:032x}{:032x}{:032x}", guids[0], guids[1], guids[2], guids[3])
+        );
+    }
+
+    #[test]
+    #[cfg(feature = "random")]
+    fn test_random_from_parts() {
+        let first = 0x1u128;
+        let second = 0x2u128;
+        let third = 0x3u128;
+        let fourth = 0x4u128;
+        let e1 = Euui::random_from_first(first);
+        assert_eq!(e1.u128(0).unwrap(), first);
+        let e2 = Euui::random_from_second(second);
+        assert_eq!(e2.u128(1).unwrap(), second);
+        let e3 = Euui::random_from_third(third);
+        assert_eq!(e3.u128(2).unwrap(), third);
+        let e4 = Euui::random_from_fourth(fourth);
+        assert_eq!(e4.u128(3).unwrap(), fourth);
+    }
+
+    #[test]
+    #[cfg(feature = "random")]
+    fn test_regenerate_parts() {
+        let euui = Euui::random();
+        let r1 = euui.regenerate_first();
+        assert_ne!(r1.u128(0), euui.u128(0));
+        assert_eq!(r1.u128(1), euui.u128(1));
+        assert_eq!(r1.u128(2), euui.u128(2));
+        assert_eq!(r1.u128(3), euui.u128(3));
+
+        let r2 = euui.regenerate_second();
+        assert_ne!(r2.u128(1), euui.u128(1));
+        assert_eq!(r2.u128(0), euui.u128(0));
+        assert_eq!(r2.u128(2), euui.u128(2));
+        assert_eq!(r2.u128(3), euui.u128(3));
+
+        let r3 = euui.regenerate_third();
+        assert_ne!(r3.u128(2), euui.u128(2));
+        assert_eq!(r3.u128(0), euui.u128(0));
+        assert_eq!(r3.u128(1), euui.u128(1));
+        assert_eq!(r3.u128(3), euui.u128(3));
+
+        let r4 = euui.regenerate_fourth();
+        assert_ne!(r4.u128(3), euui.u128(3));
+        assert_eq!(r4.u128(0), euui.u128(0));
+        assert_eq!(r4.u128(1), euui.u128(1));
+        assert_eq!(r4.u128(2), euui.u128(2));
+    }
+
+    #[test]
+    #[cfg(feature = "uuid")]
+    fn test_uuid_functions() {
+        let base = Euui::zero();
+        let uuids = [
+            Uuid::from_u128(1),
+            Uuid::from_u128(2),
+            Uuid::from_u128(3),
+            Uuid::from_u128(4),
+        ];
+        let with_part = base.with_uuid_part(uuids[2], 2);
+        assert_eq!(with_part.u128(2).unwrap(), uuids[2].as_u128());
+
+        let f = base.with_first(uuids[0]);
+        assert_eq!(f.u128(0).unwrap(), uuids[0].as_u128());
+        let s = base.with_second(uuids[1]);
+        assert_eq!(s.u128(1).unwrap(), uuids[1].as_u128());
+        let t = base.with_third(uuids[2]);
+        assert_eq!(t.u128(2).unwrap(), uuids[2].as_u128());
+        let fo = base.with_fourth(uuids[3]);
+        assert_eq!(fo.u128(3).unwrap(), uuids[3].as_u128());
+
+        let from = Euui::from_uuids(uuids);
+        assert_eq!(from.to_be_guids(), [1u128, 2, 3, 4]);
+
+        #[cfg(feature = "random_uuid")]
+        {
+            let r = Euui::random_uuids();
+            let bytes = r.to_be_bytes();
+            assert_ne!(bytes, [0u8; 64]);
+        }
+
+        for i in 0..4 {
+            assert_eq!(from.uuid(i).unwrap().as_u128(), uuids[i].as_u128());
+        }
+        assert!(from.uuid(4).is_none());
     }
 }
